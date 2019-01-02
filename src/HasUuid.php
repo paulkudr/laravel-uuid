@@ -10,7 +10,7 @@ trait HasUuid
     public static function bootHasUuid()
     {
         static::creating(function($model) {
-            $model->{$model->getKeyName()} = Uuid::uuid4();
+            $model->{$model->getKeyName()} = Uuid::uuid4()->toString();
         });
     }
 
@@ -22,7 +22,7 @@ trait HasUuid
     public function getAttribute($key)
     {
         if(in_array($key, $this->getUuids())) {
-            return Uuid::fromBytes($this->{$key});
+            return Uuid::fromBytes($this->{$key})->toString();
         }
 
         return parent::getAttribute($key);
@@ -32,7 +32,7 @@ trait HasUuid
     {
         if(in_array($key, $this->getUuids())) {
             if($value instanceof Uuid) {
-                $value = $value->getBytes();
+                $value = Uuid::fromString($value)->getBytes();
             }
         }
 
