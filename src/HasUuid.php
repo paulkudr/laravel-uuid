@@ -32,7 +32,7 @@ trait HasUuid
     {
         if(in_array($key, $this->getUuids())) {
             if($value instanceof Uuid) {
-                $value = ($value->getBytes());
+                $value = $value->getBytes();
             }
         }
 
@@ -43,7 +43,7 @@ trait HasUuid
         if(property_exists($this, 'uuids') && is_array($this->uuids)) {
             return array_merge($this->uuids, [$this->getKeyName()]);
         } else {
-            retrun [$this->getKeyName()];
+            return [$this->getKeyName()];
         }
     }
 }
