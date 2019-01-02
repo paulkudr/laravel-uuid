@@ -12,12 +12,6 @@ trait HasUuid
         static::creating(function($model) {
             $model->{$model->getKeyName()} = Uuid::uuid4();
         });
-
-        if(property_exists($this, 'uuids') && is_array($this->uuids)) {
-            $this->uuids = array_merge($this->uuids, [$this->getKeyName()]);
-        } else {
-            $this->uuids = [$this->getKeyName()];
-        }
     }
 
     public function getIncrementing()
@@ -27,7 +21,7 @@ trait HasUuid
 
     public function getAttribute($key)
     {
-        if(in_array($key, $this->uuids)) {
+        if(in_array($key, $this->getUuids())) {
             return Uuid::fromBytes($this->{$key});
         }
 
@@ -36,12 +30,20 @@ trait HasUuid
 
     public function setAttribute($key, $value)
     {
-        if(in_array($key, $this->uuids)) {
+        if(in_array($key, $this->getUuids())) {
             if($value instanceof Uuid) {
                 $value = ($value->getBytes());
             }
         }
 
         return parent::setAttribute($key, $value);
+    }
+
+    private function getUuids() {
+        if(property_exists($this, 'uuids') && is_array($this->uuids)) {
+            return array_merge($this->uuids, [$this->getKeyName()]);
+        } else {
+            retrun [$this->getKeyName()];
+        }
     }
 }
