@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "paulkudr\\laravel-uuid\\": "src/"
+            "Paulkudr\\LaravelUuid\\": "src/"
         }
     },
     "minimum-stability": "dev"
